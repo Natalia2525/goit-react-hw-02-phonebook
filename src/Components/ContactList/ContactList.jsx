@@ -1,11 +1,11 @@
 import ContactItem from './ContactItem';
-const ContactList = ({ contacts }) => {
+const ContactList = ({ contacts, onDelete }) => {
   return (
-    <div>
+    <ul>
       {contacts.map(contact => (
-        <ContactItem key={contact.id} contact={contact} />
+        <ContactItem key={contact.id} contact={contact} onDelete={onDelete} />
       ))}
-    </div>
+    </ul>
   );
 };
 

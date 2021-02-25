@@ -1,12 +1,11 @@
 // import { useState } from 'react';
-const ContactItem = ({ contact: { name, number, id } }) => {
-  console.log(name);
+const ContactItem = ({ contact: { name, number, id }, onDelete }) => {
   return (
-    <div>
+    <>
       <p>{name}</p>
       <p>{number}</p>
-      <button type="button">X</button>
-    </div>
+      <button onClick={() => onDelete(id)}>X</button>
+    </>
   );
 };
 
