@@ -1,8 +1,12 @@
-const ContactList = () => (
-  <ul>
-    <li>Valera</li>
-    <li>Petu</li>
-  </ul>
-);
+import ContactItem from './ContactItem';
+const ContactList = ({ contacts }) => {
+  return (
+    <div>
+      {contacts.map(contact => (
+        <ContactItem key={contact.id} contact={contact} />
+      ))}
+    </div>
+  );
+};
 
 export default ContactList;
