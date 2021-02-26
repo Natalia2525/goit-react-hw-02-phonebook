@@ -1,4 +1,3 @@
-// import { Component } from 'react';
 import { useState } from 'react';
 import PhonebookForm from './Components/PhonebookForm';
 import ContactList from './Components/ContactList';
@@ -11,41 +10,40 @@ const App = () => {
     { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
     { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
   ]);
-  const [filter, setFilter] = useState();
+  const [filter, setFilter] = useState('');
 
-  const handleSubmit = (newContact, filter) => {
+  const handleSubmit = newContact => {
     setContacts(prevContacts => [newContact, ...prevContacts]);
-    if (contacts.some(newContact => newContact.name === filter)) {
-      return alert(`${newContact.name} is already in the Phonebook`);
-    }
-
-    // console.log(newContact);
+  };
+  const handleFilterChange = e => {
+    setFilter(e.target.value);
   };
 
-  const handleFilterChange = e => {
-    const changeFilter = e.currentTarget.value;
+  const handleVisibleFilter = !filter
+    ? contacts
+    : contacts.filter(contact =>
+        contact.name.toLowerCase().includes(filter.toLocaleLowerCase()),
+      );
 
-    const normalizedFilter = changeFilter.toLocaleLowerCase();
-    setContacts(
-      contacts.filter(contact =>
-        contact.name.toLocaleLowerCase().includes(normalizedFilter),
-      ),
+  const handleDelete = id => {
+    setContacts(prevContacts =>
+      prevContacts.filter(contact => contact.id !== id),
     );
   };
 
-  const handleDelete = id => {
-    setContacts(prevContacts => [
-      prevContacts.filter(contact => contact.id === id),
-    ]);
+  const handleUniq = name => {
+    const filterContact = !!contacts.find(contact => contact.name === name);
+    filterContact && alert(`Contact is already in the Phonebook`);
+    return !filterContact;
   };
 
   return (
     <>
       <h1>Phonebook</h1>
-      <PhonebookForm onSubmit={handleSubmit} />
+      <PhonebookForm onSubmit={handleSubmit} onCheckUniq={handleUniq} />
       <h2>Contacts</h2>
       <Filter value={filter} onChange={handleFilterChange} />
-      <ContactList contacts={contacts} onDelete={handleDelete} />
+      <ContactList contacts={handleVisibleFilter} onDelete={handleDelete} />
     </>
   );
 };

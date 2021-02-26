@@ -1,66 +1,73 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import shortid from 'shortid';
-// import {Component} from 'react';
+import st from './PhonebookForm.module.css';
 
-const PhonebookForm = ({ onSubmit }) => {
+const PhonebookForm = ({ onSubmit, onCheckUniq }) => {
   const [number, setNumber] = useState('');
   const [name, setName] = useState('');
   const id = shortid.generate();
-
+  const handleNameChange = e => {
+    setName(e.target.value);
+  };
+  const handleNumberChange = e => {
+    setNumber(e.target.value);
+  };
   const handleSubmit = e => {
     e.preventDefault();
-    
     const newContact = {
       id,
       name,
       number,
     };
+
+    const isValidated = validateForm();
+    if (!isValidated) return;
     onSubmit(newContact);
+
     setName('');
     setNumber('');
-    // console.log(newContact);
   };
-  const handleNameChange = e => {
-    setName(e.target.value);
-    // console.log(e.target.value);
-  };
-  const handleNumberChange = e => {
-    setNumber(e.target.value);
-    // console.log(e.target.value);
+
+  const validateForm = () => {
+    if (!name || !number) {
+      alert('Please еnter data!');
+      setName('');
+      setNumber('');
+      return false;
+    }
+    return onCheckUniq(name);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
+    <form className={st.form} onSubmit={handleSubmit}>
+      <label className={st.title}>
         Name
-        <input type="text" value={name} onChange={handleNameChange} />
+        <input
+          className={st.input}
+          type="text"
+          value={name}
+          onChange={handleNameChange}
+        />
       </label>
       <label>
         Number
-        <input type="text" value={number} onChange={handleNumberChange} />
+        <input
+          className={st.input}
+          type="text"
+          value={number}
+          onChange={handleNumberChange}
+        />
       </label>
-      <button type="submit"> Add contact</button>
+      <button className={st.button} type="submit">
+        Add contact
+      </button>
     </form>
   );
 };
 
-// class Form extends Component {
-//   state = {
-//     name: '',
-//     number: '',
-//     };
-
-//   render() {
-//     return (
-//       <form>
-//         <label>
-//           Name
-//           <input type="text" />
-//         </label>
-//         <button type="button"> Add contact</button>
-//       </form>
-//     );
-//   }
-// }
-
+PhonebookForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  onCheckUniq: PropTypes.func.isRequired,
+};
 export default PhonebookForm;
