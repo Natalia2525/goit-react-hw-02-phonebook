@@ -9,6 +9,7 @@ const PhonebookForm = ({ onSubmit }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
+    
     const newContact = {
       id,
       name,

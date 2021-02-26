@@ -13,14 +13,18 @@ const App = () => {
   ]);
   const [filter, setFilter] = useState();
 
-  const handleSubmit = newContact => {
+  const handleSubmit = (newContact, filter) => {
     setContacts(prevContacts => [newContact, ...prevContacts]);
+    if (contacts.some(newContact => newContact.name === filter)) {
+      return alert(`${newContact.name} is already in the Phonebook`);
+    }
+
     // console.log(newContact);
   };
 
   const handleFilterChange = e => {
     const changeFilter = e.currentTarget.value;
-    console.log(changeFilter);
+
     const normalizedFilter = changeFilter.toLocaleLowerCase();
     setContacts(
       contacts.filter(contact =>
@@ -45,22 +49,5 @@ const App = () => {
     </>
   );
 };
-
-// class App extends Component {
-//   state = {
-//     contacts: [],
-//     name: '',
-//   };
-
-//   render() {
-//     return (
-//       <>
-//         <h1>Phonebook</h1>
-//         <Form />
-//         <ContactList />
-//       </>
-//     );
-//   }
-// }
 
 export default App;
